@@ -1,18 +1,80 @@
 var graphy = function(dom, data) {
     // CONSTANT variable
-    var CANVAS_DEFAULTWIDTH = 500;
+    var CANVAS_DEFAULT_WIDTH = 500;
     var CANVAS_DEFAULT_HEIGHT = 500;
+    var DEFAULT_MAX_X = 5;
+    var DEFAULT_MIN_X = -5;
+    var DEFAULT_MAX_Y = 5;
+    var DEFAULT_MIN_Y = -5;
+    var DEFAULT_INTERVAL = 1;
+    var MARGIN = 5;
+    var PADDING = 5;
+    var POINT_CIRCLE_RADIUS = 2;
+    var MAIN_COLOR = "#000";
 
     // Process input data
     var id = data && data.id ? data.id : 'graphy.js_' + Date.now();
     var height = data && data.height ? data.height : CANVAS_DEFAULT_HEIGHT;
-    var width = data && data.width ? data.width : CANVAS_DEFAULTWIDTH;
-    var canvas = setCanvas(id, height, width);
+    var width = data && data.width ? data.width : CANVAS_DEFAULT_WIDTH;
+    var xMax = data && data.xMax ? parseInt(data.xMax) : DEFAULT_MAX_X;
+    var xMin = data && data.xMin ? parseInt(data.xMin) : DEFAULT_MIN_X;
+    var yMax = data && data.yMax ? parseInt(data.yMax) : DEFAULT_MAX_Y;
+    var yMin = data && data.yMin ? parseInt(data.yMin) : DEFAULT_MIN_Y;
+    var interval = data && data.interval ? data.interval : DEFAULT_INTERVAL;
+
+    // Primary check for data
+    if (xMax < xMin) {
+        console.log("Error: Wrong input for x boundaries");
+        return;
+    }
+
+    if (yMax < yMin) {
+        console.log("Error: Wrong input for y boundaries");
+        return;
+    }
+
+    // Process graph position data
+    var divisionX = (width - 2 * MARGIN - 2 * PADDING) / (xMax - xMin);
+    var divisionY = (height - 2 * MARGIN - 2 * PADDING) / (yMax - yMin);
+    var originX = null;
+    if (yMax > 0 && yMin < 0) {
+        originX = MARGIN + PADDING + divisionY * yMax;
+    }
+    var originY = null;
+    if (xMax > 0 && xMin < 0) {
+        originY = MARGIN + PADDING + divisionX * Math.abs(xMin);
+    }
+
+    // Canvas Setup
+    var canvas = setEmptyCanvas();
+    var context = canvas.getContext("2d");
+
+    initializeAxes();
+
+    function initializeAxes() {
+        plotPointCircle(originX, originY);
+    }
 
     /**
-     * Set canvas
+     * Plot Circle on canvas
+     * @param  {[type]} x        [description]
+     * @param  {[type]} y        [description]
+     * @param  {[type]} selected [description]
+     * @return {[type]}          [description]
      */
-    function setCanvas() {
+    function plotPointCircle(x, y) {
+        context.beginPath();
+        context.arc(x, y, POINT_CIRCLE_RADIUS, 0, 2*Math.PI);
+        context.fill();
+        context.stroke();
+        context.fillStyle = MAIN_COLOR;
+        context.strokeStyle = MAIN_COLOR;
+    }
+
+    /**
+     * Set empty canvas
+     */
+    function setEmptyCanvas() {
         var _canvas = document.getElementById(id);
         if (_canvas == null) {
             _canvas = graphyCreateElement('canvas', id, null, '', dom);
