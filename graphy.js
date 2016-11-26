@@ -2,6 +2,8 @@ var graphy = function(dom, data) {
     // CONSTANT variable
     var CANVAS_DEFAULT_WIDTH = 500;
     var CANVAS_DEFAULT_HEIGHT = 500;
+    var DEFAULT_VERTICAL_NAME = 'y';
+    var DEFAULT_HORIZONTAL_NAME = 'x';
     var DEFAULT_MAX_X = 5;
     var DEFAULT_MIN_X = -5;
     var DEFAULT_MAX_Y = 5;
@@ -9,11 +11,14 @@ var graphy = function(dom, data) {
     var DEFAULT_INTERVAL = 1;
     var MARGIN = 5;
     var PADDING = 5;
+    var ARROW_SIZE = 5;
     var POINT_CIRCLE_RADIUS = 2;
     var MAIN_COLOR = "#000";
 
     // Process input data
     var id = data && data.id ? data.id : 'graphy.js_' + Date.now();
+    var verticalName = data && data.verticalName ? data.verticalName : DEFAULT_VERTICAL_NAME;
+    var horizontalName = data && data.horizontalName ? data.horizontalName : DEFAULT_HORIZONTAL_NAME;
     var height = data && data.height ? data.height : CANVAS_DEFAULT_HEIGHT;
     var width = data && data.width ? data.width : CANVAS_DEFAULT_WIDTH;
     var xMax = data && data.xMax ? parseInt(data.xMax) : DEFAULT_MAX_X;
@@ -36,13 +41,13 @@ var graphy = function(dom, data) {
     // Process graph position data
     var divisionX = (width - 2 * MARGIN - 2 * PADDING) / (xMax - xMin);
     var divisionY = (height - 2 * MARGIN - 2 * PADDING) / (yMax - yMin);
-    var originX = null;
-    if (yMax > 0 && yMin < 0) {
-        originX = MARGIN + PADDING + divisionY * yMax;
-    }
     var originY = null;
+    if (yMax > 0 && yMin < 0) {
+        originY = MARGIN + PADDING + divisionY * yMax;
+    }
+    var originX = null;
     if (xMax > 0 && xMin < 0) {
-        originY = MARGIN + PADDING + divisionX * Math.abs(xMin);
+        originX = MARGIN + PADDING + divisionX * Math.abs(xMin);
     }
 
     // Canvas Setup
@@ -52,7 +57,37 @@ var graphy = function(dom, data) {
     initializeAxes();
 
     function initializeAxes() {
-        plotPointCircle(originX, originY);
+        // Draw Axes if necessary
+        if (originY) {
+            drawSolidLine(MARGIN, originY, width - MARGIN, originY);
+
+            // Draw the arrow head
+            drawSolidLine(width - MARGIN, originY, width - MARGIN - ARROW_SIZE, originY - ARROW_SIZE);
+            drawSolidLine(width - MARGIN, originY, width - MARGIN - ARROW_SIZE, originY + ARROW_SIZE);
+            context.fillText(
+                horizontalName, width - MARGIN - PADDING, originY - MARGIN - PADDING
+                );
+        }
+        if (originX) {
+            drawSolidLine(originX, MARGIN, originX, height - MARGIN);
+
+            // Draw the arrow head
+            drawSolidLine(originX, MARGIN, originX - ARROW_SIZE, MARGIN + ARROW_SIZE);
+            drawSolidLine(originX, MARGIN, originX + ARROW_SIZE, MARGIN + ARROW_SIZE);
+            context.fillText(
+                verticalName, originX + MARGIN + PADDING, MARGIN + PADDING
+                );
+        }
+    }
+
+    // Draw the solid lines.
+    function drawSolidLine(fromX, fromY, toX, toY) {
+        context.beginPath();
+        context.moveTo(fromX, fromY);
+        context.lineTo(toX, toY);
+        context.closePath();                
+        context.stroke();
+        context.strokeStyle = MAIN_COLOR;
     }
 
     /**
