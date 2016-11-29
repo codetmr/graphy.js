@@ -88,11 +88,11 @@ var graphy = function(dom, data) {
                 context.fillText(i, _x, originY + 15);
             }
         }
-        for (var i = yMin; i <= yMax; i += interval) {
+        for (var i = yMax; i >= yMin; i -= interval) {
             if (i != 0) {
-                var _y = MARGIN + PADDING + (i - yMin) * divisionY;
+                var _y = MARGIN + PADDING + (yMax - i) * divisionY;
                 drawSolidLine(originX - 5, _y, originX + 5, _y);
-                context.fillText(i, originX + 10, _y + 5);
+                context.fillText(i, originX + 5, _y + 5);
             }
         }
     }
