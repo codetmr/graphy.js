@@ -10,7 +10,7 @@ var graphy = function(dom, data) {
     var DEFAULT_MIN_Y = -5;
     var DEFAULT_INTERVAL = 1;
     var MARGIN = 10;
-    var PADDING = 10;
+    var PADDING = 15;
     var ARROW_SIZE = 5;
     var POINT_CIRCLE_RADIUS = 2;
     var MAIN_COLOR = "#000";
@@ -78,13 +78,22 @@ var graphy = function(dom, data) {
                 verticalName, originX + MARGIN, MARGIN
                 );
         }
+        context.fillText(0, originX + 5, originY + 15);
 
         // Draw the intervals
         for (var i = xMin; i <= xMax; i += interval) {
-            plotPointCircle(MARGIN + PADDING + (i - xMin) * divisionX, originY);
+            if (i != 0) {
+                var _x = MARGIN + PADDING + (i - xMin) * divisionX;
+                drawSolidLine(_x, originY + 5, _x, originY - 5);
+                context.fillText(i, _x, originY + 15);
+            }
         }
         for (var i = yMin; i <= yMax; i += interval) {
-            plotPointCircle(originX, MARGIN + PADDING + (i - yMin) * divisionY);
+            if (i != 0) {
+                var _y = MARGIN + PADDING + (i - yMin) * divisionY;
+                drawSolidLine(originX - 5, _y, originX + 5, _y);
+                context.fillText(i, originX + 10, _y + 5);
+            }
         }
     }
 
