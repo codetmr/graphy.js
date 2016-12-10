@@ -62,12 +62,46 @@ var graphy = function(dom, data) {
      * @return {[type]} [description]
      */
     function drawGraph() {
-        if (data && data.points) {
-            for (var i = 0; i < data.points.length; i++) {
-                if (data.points[i].x &&  data.points[i].y) {
-                    var _x = unitToPixel(data.points[i].x, 'x');
-                    var _y = unitToPixel(data.points[i].y, 'y');
-                    plotPointCircle(_x, _y);
+        if (data) {
+            if (data.points) {
+                for (var i = 0; i < data.points.length; i++) {
+                    if (data.points[i].x &&  data.points[i].y) {
+                        var _x = unitToPixel(data.points[i].x, 'x');
+                        var _y = unitToPixel(data.points[i].y, 'y');
+                        plotPointCircle(_x, _y);
+                    }
+                }
+            }
+
+            if (data.lines) {
+                for (var i = 0; i < data.lines.length; i++) {
+                    if (data.lines[i].para) {
+                        var para = data.lines[i].para;
+                        var rangeX = data.lines[i].rangeX;
+                        var rangeY = data.lines[i].rangeY;
+
+                        // Linear lines
+                        if (para.length === 2) {
+                            var startX = xMin;
+                            var endX = xMax;
+                            if (rangeX) {
+                                if (rangeX[0] && startX < rangeX[0]) {
+                                    startX = rangeX[0];
+                                }
+                                if (rangeX[1] && endX < rangeX[1]) {
+                                    endX = rangeX[1];
+                                }
+                            }
+                            var startY = para[0] + para[1] * startX;
+                            var endY = para[0] + para[1] * endX;
+                        }
+
+                        var _x1 = unitToPixel(startX, 'x');
+                        var _x2 = unitToPixel(endX, 'x');
+                        var _y1 = unitToPixel(startY, 'y');
+                        var _y2 = unitToPixel(endY, 'y');
+                        drawSolidLine(_x1, _y1, _x2, _y2);
+                    }
                 }
             }
         }
