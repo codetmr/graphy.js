@@ -55,7 +55,28 @@ var graphy = function(dom, data) {
     var context = canvas.getContext("2d");
 
     initializeAxes();
+    drawGraph();
 
+    /**
+     * Draw Graph according to the input from user
+     * @return {[type]} [description]
+     */
+    function drawGraph() {
+        if (data && data.points) {
+            for (var i = 0; i < data.points.length; i++) {
+                if (data.points[i].x &&  data.points[i].y) {
+                    var _x = unitToPixel(data.points[i].x, 'x');
+                    var _y = unitToPixel(data.points[i].y, 'y');
+                    plotPointCircle(_x, _y);
+                }
+            }
+        }
+    }
+
+    /**
+     * Initialize Axes
+     * @return {[type]} [description]
+     */
     function initializeAxes() {
         // Draw Axes if necessary
         if (originY) {
@@ -108,7 +129,19 @@ var graphy = function(dom, data) {
     }
 
     /**
-     * Plot Circle on canvas
+     * Plot Circle Point on canvas
+     * @param  {[type]} x        [description]
+     * @param  {[type]} y        [description]
+     * @param  {[type]} selected [description]
+     * @return {[type]}          [description]
+     */
+    function plotPointCross(x, y) {
+        drawSolidLine(x - 5, y - 5, x + 5, y + 5);
+        drawSolidLine(x - 5, y + 5, x + 5, y - 5);
+    }
+
+    /**
+     * Plot Cross Point on canvas
      * @param  {[type]} x        [description]
      * @param  {[type]} y        [description]
      * @param  {[type]} selected [description]
@@ -121,6 +154,17 @@ var graphy = function(dom, data) {
         context.stroke();
         context.fillStyle = MAIN_COLOR;
         context.strokeStyle = MAIN_COLOR;
+    }
+
+    function unitToPixel(unit, direction) {
+        unit = parseFloat(unit);
+        if (direction === 'x') {
+            return MARGIN + PADDING + (unit - xMin) * divisionX;
+        } else if (direction === 'y') {
+            return MARGIN + PADDING + (yMax - unit) * divisionY;
+        } else {
+            console.log('Direction is not defined');
+        }
     }
 
     /**
