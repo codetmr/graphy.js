@@ -14,6 +14,7 @@ var graphy = function(dom, data) {
     var ARROW_SIZE = 5;
     var POINT_CIRCLE_RADIUS = 2;
     var MAIN_COLOR = "#000";
+    var DEFAULT_POLY_SEGMENT = 0.1;
 
     // Process input data
     var id = data && data.id ? data.id : 'graphy.js_' + Date.now();
@@ -73,37 +74,82 @@ var graphy = function(dom, data) {
                 }
             }
 
-            if (data.lines) {
-                for (var i = 0; i < data.lines.length; i++) {
-                    if (data.lines[i].para) {
-                        var para = data.lines[i].para;
-                        var rangeX = data.lines[i].rangeX;
-                        var rangeY = data.lines[i].rangeY;
-
-                        // Linear lines
-                        if (para.length === 2) {
-                            var startX = xMin;
-                            var endX = xMax;
-                            if (rangeX) {
-                                if (rangeX[0] && startX < rangeX[0]) {
-                                    startX = rangeX[0];
-                                }
-                                if (rangeX[1] && endX < rangeX[1]) {
-                                    endX = rangeX[1];
-                                }
+            if (data.polynomials) {
+                for (var i = 0; i < data.polynomials.length; i++) {
+                    if (data.polynomials[i].para) {
+                        var para = data.polynomials[i].para;
+                        var rangeX = data.polynomials[i].rangeX;
+                        var rangeY = data.polynomials[i].rangeY;
+                        var startX = xMin;
+                        var endX = xMax;
+                        if (rangeX) {
+                            if (rangeX[0] && startX < rangeX[0]) {
+                                startX = rangeX[0];
                             }
-                            var startY = para[0] + para[1] * startX;
-                            var endY = para[0] + para[1] * endX;
+                            if (rangeX[1] && endX > rangeX[1]) {
+                                endX = rangeX[1];
+                            }
                         }
 
-                        var _x1 = unitToPixel(startX, 'x');
-                        var _x2 = unitToPixel(endX, 'x');
-                        var _y1 = unitToPixel(startY, 'y');
-                        var _y2 = unitToPixel(endY, 'y');
-                        drawSolidLine(_x1, _y1, _x2, _y2);
+                        // Linear polynomials
+                        if (para.length === 2) {
+                            var startY = para[0] * startX + para[1];
+                            var endY = para[0] * endX + para[1];
+
+                            var _x1 = unitToPixel(startX, 'x');
+                            var _x2 = unitToPixel(endX, 'x');
+                            var _y1 = unitToPixel(startY, 'y');
+                            var _y2 = unitToPixel(endY, 'y');
+                            drawSolidLine(_x1, _y1, _x2, _y2);
+                        } else if (para.length > 2) {
+                            var segment = data.polynomials[i].segment ?
+                                parseFloat(data.polynomials[i]) : DEFAULT_POLY_SEGMENT;
+                            drawPoly(startX, endX, para, segment);
+                        }
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Function to draw polynomials
+     * @param  {[type]} startX [description]
+     * @param  {[type]} endX   [description]
+     * @param  {[type]} para   [description]
+     * @return {[type]}        [description]
+     */
+    function drawPoly(startX, endX, para, segment) {
+        console.log(para);
+        if (segment <= 0) {
+            console.log('Segment is not positive');
+            return;
+        }
+
+        var startY = 0;
+        for (var i = 0; i < para.length; i++) {
+            var power = para.length - i - 1;
+            console.log(power);
+            startY += para[i] * Math.pow(startX, power);
+        }
+        var x = startX;
+
+        while (x < endX) {
+            x += segment;
+            var y = null;
+            for (var i = 0; i < para.length; i++) {
+                var power = para.length - i - 1;
+                y += para[i] * Math.pow(startX, power);
+            }
+
+            var _x1 = unitToPixel(startX, 'x');
+            var _x2 = unitToPixel(x, 'x');
+            var _y1 = unitToPixel(startY, 'y');
+            var _y2 = unitToPixel(y, 'y');
+            drawSolidLine(_x1, _y1, _x2, _y2);
+
+            startX = x;
+            startY = y;
         }
     }
 
