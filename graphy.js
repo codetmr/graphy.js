@@ -120,36 +120,34 @@ var graphy = function(dom, data) {
      * @return {[type]}        [description]
      */
     function drawPoly(startX, endX, para, segment) {
-        console.log(para);
         if (segment <= 0) {
             console.log('Segment is not positive');
             return;
         }
 
-        var startY = 0;
+        var prevX = startX;
+        var prevY = 0;
         for (var i = 0; i < para.length; i++) {
             var power = para.length - i - 1;
-            console.log(power);
-            startY += para[i] * Math.pow(startX, power);
+            prevY += para[i] * Math.pow(prevX, power);
         }
-        var x = startX;
 
-        while (x < endX) {
-            x += segment;
-            var y = null;
+        while (prevX < endX) {
+            nextX = prevX + segment;
+            var nextY = 0;
             for (var i = 0; i < para.length; i++) {
                 var power = para.length - i - 1;
-                y += para[i] * Math.pow(startX, power);
+                nextY += para[i] * Math.pow(prevX, power);
             }
 
-            var _x1 = unitToPixel(startX, 'x');
-            var _x2 = unitToPixel(x, 'x');
-            var _y1 = unitToPixel(startY, 'y');
-            var _y2 = unitToPixel(y, 'y');
+            var _x1 = unitToPixel(prevX, 'x');
+            var _x2 = unitToPixel(nextX, 'x');
+            var _y1 = unitToPixel(prevY, 'y');
+            var _y2 = unitToPixel(nextY, 'y');
             drawSolidLine(_x1, _y1, _x2, _y2);
 
-            startX = x;
-            startY = y;
+            prevX = nextX;
+            prevY = nextY;
         }
     }
 
