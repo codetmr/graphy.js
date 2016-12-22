@@ -17,89 +17,15 @@ var graphy = function(dom, data) {
     var POLY_SEGMENT = 0.1;
     var ID = 'graphy.js_' + Date.now();
 
-    // Primary check for data
-    if (xMax < xMin) {
-        console.log("Error: Wrong input for x boundaries");
-        return;
-    }
-
-    if (yMax < yMin) {
-        console.log("Error: Wrong input for y boundaries");
-        return;
-    }
-
-    // Process graph position data
-    var divisionX = (CVS_WIDTH - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_X_UNIT - MIN_X_UNIT);
-    var divisionY = (CVS_HEIGHT - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_Y_UNIT - MIN_Y_UNIT);
-    var originY = null;
-    if (MAX_Y_UNIT > 0 && MIN_Y_UNIT < 0) {
-        originY = MARGIN_PX + PADDING_PX + divisionY * MAX_Y_UNIT;
-    }
-    var originX = null;
-    if (MAX_X_UNIT > 0 && MIN_X_UNIT < 0) {
-        originX = MARGIN_PX + PADDING_PX + divisionX * Math.abs(MIN_X_UNIT);
-    }
-
     // Canvas Setup
-    var canvas = setEmptyCanvas();
+    var canvas = setEmptyCanvas(ID);
     var context = canvas.getContext("2d");
+    var divisionX = null;
+    var divisionY = null;
+    var originY = null;
+    var originX = null;
 
     initializeAxes();
-    drawGraph();
-
-    /**
-     * Draw Graph according to the input from user
-     * @return {[type]} [description]
-     */
-    function drawGraph() {
-        if (data) {
-            if (data.points) {
-                for (var i = 0; i < data.points.length; i++) {
-                    if (data.points[i].x &&  data.points[i].y) {
-                        var _x = unitToPixel(data.points[i].x, 'x');
-                        var _y = unitToPixel(data.points[i].y, 'y');
-                        plotPointCircle(_x, _y);
-                    }
-                }
-            }
-
-            if (data.polynomials) {
-                for (var i = 0; i < data.polynomials.length; i++) {
-                    if (data.polynomials[i].para) {
-                        var para = data.polynomials[i].para;
-                        var rangeX = data.polynomials[i].rangeX;
-                        var rangeY = data.polynomials[i].rangeY;
-                        var startX = MIN_X_UNIT;
-                        var endX = MAX_X_UNIT;
-                        if (rangeX) {
-                            if (rangeX[0] && startX < rangeX[0]) {
-                                startX = rangeX[0];
-                            }
-                            if (rangeX[1] && endX > rangeX[1]) {
-                                endX = rangeX[1];
-                            }
-                        }
-
-                        // Linear polynomials
-                        if (para.length === 2) {
-                            var startY = para[0] * startX + para[1];
-                            var endY = para[0] * endX + para[1];
-
-                            var _x1 = unitToPixel(startX, 'x');
-                            var _x2 = unitToPixel(endX, 'x');
-                            var _y1 = unitToPixel(startY, 'y');
-                            var _y2 = unitToPixel(endY, 'y');
-                            drawSolidLine(_x1, _y1, _x2, _y2);
-                        } else if (para.length > 2) {
-                            var segment = data.polynomials[i].segment ?
-                                parseFloat(data.polynomials[i]) : POLY_SEGMENT;
-                            drawPoly(startX, endX, para, segment);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Function to draw polynomials
@@ -145,6 +71,18 @@ var graphy = function(dom, data) {
      * @return {[type]} [description]
      */
     function initializeAxes() {
+        // Process graph position data
+        divisionX = (CVS_WIDTH - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_X_UNIT - MIN_X_UNIT);
+        divisionY = (CVS_HEIGHT - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_Y_UNIT - MIN_Y_UNIT);
+        originY = null;
+        if (MAX_Y_UNIT > 0 && MIN_Y_UNIT < 0) {
+            originY = MARGIN_PX + PADDING_PX + divisionY * MAX_Y_UNIT;
+        }
+        originX = null;
+        if (MAX_X_UNIT > 0 && MIN_X_UNIT < 0) {
+            originX = MARGIN_PX + PADDING_PX + divisionX * Math.abs(MIN_X_UNIT);
+        }
+
         // Draw Axes if necessary
         if (originY) {
             drawSolidLine(MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX, originY);
@@ -237,10 +175,10 @@ var graphy = function(dom, data) {
     /**
      * Set empty canvas
      */
-    function setEmptyCanvas() {
-        var _canvas = document.getElementById(id);
+    function setEmptyCanvas(_id) {
+        var _canvas = document.getElementById(_id);
         if (_canvas == null) {
-            _canvas = graphyCreateElement('canvas', id, null, '', dom);
+            _canvas = graphyCreateElement('canvas', _id, null, '', dom);
         }
 
         _canvas.width = CVS_WIDTH;
@@ -280,7 +218,27 @@ var graphy = function(dom, data) {
     return {
         setup: function(data) {
             if (data != null) {
-                
+                id = data.id ? data.id : 'graphy.js_' + Date.now();
+                verticalName = data.verticalName ? data.verticalName : DEFAULT_VERTICAL_NAME;
+                horizontalName = data.horizontalName ? data.horizontalName : DEFAULT_HORIZONTAL_NAME;
+                height = data.height ? data.height : CANVAS_DEFAULT_HEIGHT;
+                width = data.width ? data.width : CANVAS_DEFAULT_WIDTH;
+                xMax = data.xMax ? parseInt(data.xMax) : DEFAULT_MAX_X;
+                xMin = data.xMin ? parseInt(data.xMin) : DEFAULT_MIN_X;
+                yMax = data.yMax ? parseInt(data.yMax) : DEFAULT_MAX_Y;
+                yMin = data.yMin ? parseInt(data.yMin) : DEFAULT_MIN_Y;
+                interval = data.interval ? data.interval : DEFAULT_INTERVAL;
+
+                // Primary check for data
+                if (xMax < xMin) {
+                    console.log("Error: Wrong input for x boundaries");
+                    return;
+                }
+
+                if (yMax < yMin) {
+                    console.log("Error: Wrong input for y boundaries");
+                    return;
+                }
             }
         },
         plotPoint: function(x, y, shape) {
