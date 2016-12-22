@@ -218,27 +218,29 @@ var graphy = function(dom, data) {
     return {
         setup: function(data) {
             if (data != null) {
-                id = data.id ? data.id : 'graphy.js_' + Date.now();
-                verticalName = data.verticalName ? data.verticalName : DEFAULT_VERTICAL_NAME;
-                horizontalName = data.horizontalName ? data.horizontalName : DEFAULT_HORIZONTAL_NAME;
-                height = data.height ? data.height : CANVAS_DEFAULT_HEIGHT;
-                width = data.width ? data.width : CANVAS_DEFAULT_WIDTH;
-                xMax = data.xMax ? parseInt(data.xMax) : DEFAULT_MAX_X;
-                xMin = data.xMin ? parseInt(data.xMin) : DEFAULT_MIN_X;
-                yMax = data.yMax ? parseInt(data.yMax) : DEFAULT_MAX_Y;
-                yMin = data.yMin ? parseInt(data.yMin) : DEFAULT_MIN_Y;
-                interval = data.interval ? data.interval : DEFAULT_INTERVAL;
+                if (data.id) ID = data.id;
+                if (data.verticalName) VERTICAL_NAME = data.verticalName;
+                if (data.horizontalName) HORIZONTAL_NAME = data.horizontalName;
+                if (data.height) CVS_HEIGHT = data.height;
+                if (data.width) CVS_WIDTH = data.width;
+                if (data.xMax) MAX_X_UNIT = parseInt(data.xMax);
+                if (data.xMin) MIN_X_UNIT = parseInt(data.xMin);
+                if (data.yMax) MAX_Y_UNIT = parseInt(data.yMax);
+                if (data.yMin) MIN_Y_UNIT = parseInt(data.yMin);
+                if (data.interval) INTERVAL_UNIT = data.interval;
 
                 // Primary check for data
-                if (xMax < xMin) {
+                if (MAX_X_UNIT < MIN_X_UNIT) {
                     console.log("Error: Wrong input for x boundaries");
                     return;
                 }
 
-                if (yMax < yMin) {
+                if (MAX_Y_UNIT < MIN_Y_UNIT) {
                     console.log("Error: Wrong input for y boundaries");
                     return;
                 }
+
+                initializeAxes();
             }
         },
         plotPoint: function(x, y, shape) {
