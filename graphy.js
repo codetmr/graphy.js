@@ -286,4 +286,50 @@ var graphy = function(dom, data) {
         }
         return _dom;
     }
+
+    // Public Object APIs
+    return {
+        plotPoint: function(x, y, shape) {
+            if (x == null || y == null) {
+                var _x = unitToPixel(x, 'x');
+                var _y = unitToPixel(y, 'y');
+
+                if (shape === 'cross') {
+                    plotPointCircle(_x, _y);
+                } else {
+                    plotPointCross(_x, _y);
+                }
+            }
+        },
+        drawPoly: function(para, rangeX) {
+            if (para != null) {
+                var startX = xMin;
+                var endX = xMax;
+                if (rangeX) {
+                    if (rangeX[0] && startX < rangeX[0]) {
+                        startX = rangeX[0];
+                    }
+                    if (rangeX[1] && endX > rangeX[1]) {
+                        endX = rangeX[1];
+                    }
+                }
+
+                // Linear polynomials
+                if (para.length === 2) {
+                    var startY = para[0] * startX + para[1];
+                    var endY = para[0] * endX + para[1];
+
+                    var _x1 = unitToPixel(startX, 'x');
+                    var _x2 = unitToPixel(endX, 'x');
+                    var _y1 = unitToPixel(startY, 'y');
+                    var _y2 = unitToPixel(endY, 'y');
+                    drawSolidLine(_x1, _y1, _x2, _y2);
+                } else if (para.length > 2) {
+                    var segment = data.polynomials[i].segment ?
+                        parseFloat(data.polynomials[i]) : DEFAULT_POLY_SEGMENT;
+                    drawPoly(startX, endX, para, segment);
+                }
+            }
+        }
+    }
 }
