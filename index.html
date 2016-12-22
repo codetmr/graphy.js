@@ -10,38 +10,40 @@
 
     <script type="text/javascript">
         var div = document.getElementById('graph');
-        data = {
-            points: [
-                {
-                    x: 2,
-                    y: 3, 
-                    text:'A',
-                    color: 'red'
-                },
-            ],
-            // lines: [
-            //     {
-            //         para: [1, 1],
-            //         rangeX: [-4, 4],
-            //         rangeY: [-4, 4],
-            //     }
-            // ],
-            polynomials: [
-                {
-                    para: [1, 1],
-                    rangeX: [-4, 3],
-                    // rangeY: [-4, 4],
-                },
-                {
-                    para: [1, 0, 0],
-                    rangeX: [-2, 2],
-                },
-                {
-                    para: [1, 2, 0, -1],
-                    rangeX: [-3, 1.5],
-                }
-            ]
-        }
-        graphy(div, data);
+        // data = {
+        //     points: [
+        //         {
+        //             x: 2,
+        //             y: 3, 
+        //             text:'A',
+        //             color: 'red'
+        //         },
+        //     ],
+        //     // lines: [
+        //     //     {
+        //     //         para: [1, 1],
+        //     //         rangeX: [-4, 4],
+        //     //         rangeY: [-4, 4],
+        //     //     }
+        //     // ],
+        //     polynomials: [
+        //         {
+        //             para: [1, 1],
+        //             rangeX: [-4, 3],
+        //             // rangeY: [-4, 4],
+        //         },
+        //         {
+        //             para: [1, 0, 0],
+        //             rangeX: [-2, 2],
+        //         },
+        //         {
+        //             para: [1, 2, 0, -1],
+        //             rangeX: [-3, 1.5],
+        //         }
+        //     ]
+        // }
+        var graph = graphy(div);
+        graph.plotPoint(1,2);
+        graph.drawPoly([1, 2], [-4, 3]);
     </script>
 </html>
