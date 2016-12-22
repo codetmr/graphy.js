@@ -28,19 +28,7 @@ var graph = graphy(div);
 
 ### APIs
 
-Dillinger is currently extended with the following plugins
 
-* Dropbox
-* Github
-* Google Drive
-* OneDrive
-
-Readmes, how to use them in your own application can be found here:
-
-* [plugins/dropbox/README.md] [PlDb]
-* [plugins/github/README.md] [PlGh]
-* [plugins/googledrive/README.md] [PlGd]
-* [plugins/onedrive/README.md] [PlOd]
 
 ### Roadmap
 
