@@ -1,32 +1,21 @@
 var graphy = function(dom, data) {
     // CONSTANT variable
-    var CANVAS_DEFAULT_WIDTH = 500;
-    var CANVAS_DEFAULT_HEIGHT = 500;
-    var DEFAULT_VERTICAL_NAME = 'y';
-    var DEFAULT_HORIZONTAL_NAME = 'x';
-    var DEFAULT_MAX_X = 5;
-    var DEFAULT_MIN_X = -5;
-    var DEFAULT_MAX_Y = 5;
-    var DEFAULT_MIN_Y = -5;
-    var DEFAULT_INTERVAL = 1;
-    var MARGIN = 10;
-    var PADDING = 15;
-    var ARROW_SIZE = 5;
-    var POINT_CIRCLE_RADIUS = 2;
+    var CVS_WIDTH = 500;
+    var CVS_HEIGHT = 500;
+    var VERTICAL_NAME = 'y';
+    var HORIZONTAL_NAME = 'x';
+    var MAX_X_UNIT = 5;
+    var MIN_X_UNIT = -5;
+    var MAX_Y_UNIT = 5;
+    var MIN_Y_UNIT = -5;
+    var INTERVAL_UNIT = 1;
+    var MARGIN_PX = 10;
+    var PADDING_PX = 15;
+    var ARROW_SZ_PX = 5;
+    var POINT_RAD_PX = 2;
     var MAIN_COLOR = "#000";
-    var DEFAULT_POLY_SEGMENT = 0.1;
-
-    // Process input data
-    var id = data && data.id ? data.id : 'graphy.js_' + Date.now();
-    var verticalName = data && data.verticalName ? data.verticalName : DEFAULT_VERTICAL_NAME;
-    var horizontalName = data && data.horizontalName ? data.horizontalName : DEFAULT_HORIZONTAL_NAME;
-    var height = data && data.height ? data.height : CANVAS_DEFAULT_HEIGHT;
-    var width = data && data.width ? data.width : CANVAS_DEFAULT_WIDTH;
-    var xMax = data && data.xMax ? parseInt(data.xMax) : DEFAULT_MAX_X;
-    var xMin = data && data.xMin ? parseInt(data.xMin) : DEFAULT_MIN_X;
-    var yMax = data && data.yMax ? parseInt(data.yMax) : DEFAULT_MAX_Y;
-    var yMin = data && data.yMin ? parseInt(data.yMin) : DEFAULT_MIN_Y;
-    var interval = data && data.interval ? data.interval : DEFAULT_INTERVAL;
+    var POLY_SEGMENT = 0.1;
+    var ID = 'graphy.js_' + Date.now();
 
     // Primary check for data
     if (xMax < xMin) {
@@ -40,15 +29,15 @@ var graphy = function(dom, data) {
     }
 
     // Process graph position data
-    var divisionX = (width - 2 * MARGIN - 2 * PADDING) / (xMax - xMin);
-    var divisionY = (height - 2 * MARGIN - 2 * PADDING) / (yMax - yMin);
+    var divisionX = (CVS_WIDTH - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_X_UNIT - MIN_X_UNIT);
+    var divisionY = (CVS_HEIGHT - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_Y_UNIT - MIN_Y_UNIT);
     var originY = null;
-    if (yMax > 0 && yMin < 0) {
-        originY = MARGIN + PADDING + divisionY * yMax;
+    if (MAX_Y_UNIT > 0 && MIN_Y_UNIT < 0) {
+        originY = MARGIN_PX + PADDING_PX + divisionY * MAX_Y_UNIT;
     }
     var originX = null;
-    if (xMax > 0 && xMin < 0) {
-        originX = MARGIN + PADDING + divisionX * Math.abs(xMin);
+    if (MAX_X_UNIT > 0 && MIN_X_UNIT < 0) {
+        originX = MARGIN_PX + PADDING_PX + divisionX * Math.abs(MIN_X_UNIT);
     }
 
     // Canvas Setup
@@ -80,8 +69,8 @@ var graphy = function(dom, data) {
                         var para = data.polynomials[i].para;
                         var rangeX = data.polynomials[i].rangeX;
                         var rangeY = data.polynomials[i].rangeY;
-                        var startX = xMin;
-                        var endX = xMax;
+                        var startX = MIN_X_UNIT;
+                        var endX = MAX_X_UNIT;
                         if (rangeX) {
                             if (rangeX[0] && startX < rangeX[0]) {
                                 startX = rangeX[0];
@@ -103,7 +92,7 @@ var graphy = function(dom, data) {
                             drawSolidLine(_x1, _y1, _x2, _y2);
                         } else if (para.length > 2) {
                             var segment = data.polynomials[i].segment ?
-                                parseFloat(data.polynomials[i]) : DEFAULT_POLY_SEGMENT;
+                                parseFloat(data.polynomials[i]) : POLY_SEGMENT;
                             drawPoly(startX, endX, para, segment);
                         }
                     }
@@ -158,38 +147,38 @@ var graphy = function(dom, data) {
     function initializeAxes() {
         // Draw Axes if necessary
         if (originY) {
-            drawSolidLine(MARGIN, originY, width - MARGIN, originY);
+            drawSolidLine(MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX, originY);
 
             // Draw the arrow head
-            drawSolidLine(width - MARGIN, originY, width - MARGIN - ARROW_SIZE, originY - ARROW_SIZE);
-            drawSolidLine(width - MARGIN, originY, width - MARGIN - ARROW_SIZE, originY + ARROW_SIZE);
+            drawSolidLine(CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY - ARROW_SZ_PX);
+            drawSolidLine(CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY + ARROW_SZ_PX);
             context.fillText(
-                horizontalName, width - MARGIN, originY - MARGIN
+                HORIZONTAL_NAME, CVS_WIDTH - MARGIN_PX, originY - MARGIN_PX
                 );
         }
         if (originX) {
-            drawSolidLine(originX, MARGIN, originX, height - MARGIN);
+            drawSolidLine(originX, MARGIN_PX, originX, CVS_HEIGHT - MARGIN_PX);
 
             // Draw the arrow head
-            drawSolidLine(originX, MARGIN, originX - ARROW_SIZE, MARGIN + ARROW_SIZE);
-            drawSolidLine(originX, MARGIN, originX + ARROW_SIZE, MARGIN + ARROW_SIZE);
+            drawSolidLine(originX, MARGIN_PX, originX - ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX);
+            drawSolidLine(originX, MARGIN_PX, originX + ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX);
             context.fillText(
-                verticalName, originX + MARGIN, MARGIN
+                VERTICAL_NAME, originX + MARGIN_PX, MARGIN_PX
                 );
         }
         context.fillText(0, originX + 5, originY + 15);
 
         // Draw the intervals
-        for (var i = xMin; i <= xMax; i += interval) {
+        for (var i = MIN_X_UNIT; i <= MAX_X_UNIT; i += INTERVAL_UNIT) {
             if (i != 0) {
-                var _x = MARGIN + PADDING + (i - xMin) * divisionX;
+                var _x = MARGIN_PX + PADDING_PX + (i - MIN_X_UNIT) * divisionX;
                 drawSolidLine(_x, originY + 5, _x, originY - 5);
                 context.fillText(i, _x, originY + 15);
             }
         }
-        for (var i = yMax; i >= yMin; i -= interval) {
+        for (var i = MAX_Y_UNIT; i >= MIN_Y_UNIT; i -= INTERVAL_UNIT) {
             if (i != 0) {
-                var _y = MARGIN + PADDING + (yMax - i) * divisionY;
+                var _y = MARGIN_PX + PADDING_PX + (MAX_Y_UNIT - i) * divisionY;
                 drawSolidLine(originX - 5, _y, originX + 5, _y);
                 context.fillText(i, originX + 5, _y + 5);
             }
@@ -227,7 +216,7 @@ var graphy = function(dom, data) {
      */
     function plotPointCircle(x, y) {
         context.beginPath();
-        context.arc(x, y, POINT_CIRCLE_RADIUS, 0, 2*Math.PI);
+        context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
         context.fill();
         context.stroke();
         context.fillStyle = MAIN_COLOR;
@@ -237,9 +226,9 @@ var graphy = function(dom, data) {
     function unitToPixel(unit, direction) {
         unit = parseFloat(unit);
         if (direction === 'x') {
-            return MARGIN + PADDING + (unit - xMin) * divisionX;
+            return MARGIN_PX + PADDING_PX + (unit - MIN_X_UNIT) * divisionX;
         } else if (direction === 'y') {
-            return MARGIN + PADDING + (yMax - unit) * divisionY;
+            return MARGIN_PX + PADDING_PX + (MAX_Y_UNIT - unit) * divisionY;
         } else {
             console.log('Direction is not defined');
         }
@@ -254,8 +243,8 @@ var graphy = function(dom, data) {
             _canvas = graphyCreateElement('canvas', id, null, '', dom);
         }
 
-        _canvas.width = width;
-        _canvas.height = height;
+        _canvas.width = CVS_WIDTH;
+        _canvas.height = CVS_HEIGHT;
         _canvas.style.border = '1px solid lightgray';
         _canvas.getContext("2d").font = "12px verdana";
         return _canvas;
@@ -289,6 +278,11 @@ var graphy = function(dom, data) {
 
     // Public Object APIs
     return {
+        setup: function(data) {
+            if (data != null) {
+                
+            }
+        },
         plotPoint: function(x, y, shape) {
             if (x == null || y == null) {
                 var _x = unitToPixel(x, 'x');
@@ -303,8 +297,8 @@ var graphy = function(dom, data) {
         },
         drawPoly: function(para, rangeX) {
             if (para != null) {
-                var startX = xMin;
-                var endX = xMax;
+                var startX = MIN_X_UNIT;
+                var endX = MAX_X_UNIT;
                 if (rangeX) {
                     if (rangeX[0] && startX < rangeX[0]) {
                         startX = rangeX[0];
@@ -326,7 +320,7 @@ var graphy = function(dom, data) {
                     drawSolidLine(_x1, _y1, _x2, _y2);
                 } else if (para.length > 2) {
                     var segment = data.polynomials[i].segment ?
-                        parseFloat(data.polynomials[i]) : DEFAULT_POLY_SEGMENT;
+                        parseFloat(data.polynomials[i]) : POLY_SEGMENT;
                     drawPoly(startX, endX, para, segment);
                 }
             }
