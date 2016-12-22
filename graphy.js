@@ -137,7 +137,7 @@ var graphy = function(dom, data) {
             var nextY = 0;
             for (var i = 0; i < para.length; i++) {
                 var power = para.length - i - 1;
-                nextY += para[i] * Math.pow(prevX, power);
+                nextY += para[i] * Math.pow(nextX, power);
             }
 
             var _x1 = unitToPixel(prevX, 'x');
