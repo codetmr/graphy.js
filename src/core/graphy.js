@@ -122,7 +122,7 @@ var graphy = function(dom, data) {
                 if (shape === 'cross') {
                     plotPointCircle(context, _x, _y, MAIN_COLOR);
                 } else {
-                    plotPointCross(_x, _y);
+                    plotPointCross(context, _x, _y);
                 }
             }
         },
@@ -144,15 +144,19 @@ var graphy = function(dom, data) {
                     var startY = para[0] * startX + para[1];
                     var endY = para[0] * endX + para[1];
 
-                    var _x1 = unitToPixel(startX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _x2 = unitToPixel(endX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _y1 = unitToPixel(startY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _y2 = unitToPixel(endY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
+                    var _x1 = unitToPixel(
+                        startX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
+                    var _x2 = unitToPixel(
+                        endX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
+                    var _y1 = unitToPixel(
+                        startY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
+                    var _y2 = unitToPixel(
+                        endY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
                     drawSolidLine(context, _x1, _y1, _x2, _y2, MAIN_COLOR);
                 } else if (para.length > 2) {
                     var segment = data.polynomials[i].segment ?
                         parseFloat(data.polynomials[i]) : POLY_SEGMENT;
-                    drawPoly(startX, endX, para, segment);
+                    drawPoly(context, startX, endX, para, segment);
                 }
             }
         }

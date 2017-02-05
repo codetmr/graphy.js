@@ -10,6 +10,6 @@ gulp.task('default', function() {
     return gulp.src('src/core/*.js')
         .pipe(concat('graphy.js'))
         .pipe(rename({suffix: '.min'}))
-        // .pipe(ugligy())
+        .pipe(ugligy())
         .pipe(gulp.dest('build'))
 });

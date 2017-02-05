@@ -5,9 +5,9 @@
  * @param  {[type]} selected [description]
  * @return {[type]}          [description]
  */
-function plotPointCross(x, y) {
-    drawSolidLine(x - 5, y - 5, x + 5, y + 5);
-    drawSolidLine(x - 5, y + 5, x + 5, y - 5);
+function plotPointCross(context, x, y) {
+    drawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
+    drawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
 }
 
 /**
@@ -33,7 +33,7 @@ function plotPointCircle(context, x, y, color) {
  * @param  {[type]} para   [description]
  * @return {[type]}        [description]
  */
-function drawPoly(startX, endX, para, segment) {
+function drawPoly(context, startX, endX, para, segment) {
     if (segment <= 0) {
         console.log('Segment is not positive');
         return;
@@ -58,7 +58,7 @@ function drawPoly(startX, endX, para, segment) {
         var _x2 = unitToPixel(nextX, 'x');
         var _y1 = unitToPixel(prevY, 'y');
         var _y2 = unitToPixel(nextY, 'y');
-        drawSolidLine(_x1, _y1, _x2, _y2);
+        drawSolidLine(context, _x1, _y1, _x2, _y2);
 
         prevX = nextX;
         prevY = nextY;
