@@ -140,9 +140,7 @@ var graphy = function(dom, data) {
                     }
                 }
 
-                var segment = data.polynomials[i].segment ?
-                    parseFloat(data.polynomials[i]) : meta.POLY_SEGMENT;
-                graphyDrawPoly(context, startX, endX, para, segment);
+                graphyDrawPoly(context, startX, endX, para, meta);
             }
         }
     }

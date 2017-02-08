@@ -39,8 +39,8 @@ function graphyDrawLine(context, start, end, meta) {
  * @param  {[type]} para   [description]
  * @return {[type]}        [description]
  */
-function graphyDrawPoly(context, startX, endX, para, segment) {
-    if (segment <= 0) {
+function graphyDrawPoly(context, startX, endX, para, meta) {
+    if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
         return;
     }
@@ -53,17 +53,17 @@ function graphyDrawPoly(context, startX, endX, para, segment) {
     }
 
     while (prevX < endX) {
-        nextX = prevX + segment;
+        nextX = prevX + meta.POLY_SEGMENT;
         var nextY = 0;
         for (var i = 0; i < para.length; i++) {
             var power = para.length - i - 1;
             nextY += para[i] * Math.pow(nextX, power);
         }
 
-        var _x1 = unitToPixel(prevX, 'x');
-        var _x2 = unitToPixel(nextX, 'x');
-        var _y1 = unitToPixel(prevY, 'y');
-        var _y2 = unitToPixel(nextY, 'y');
+        var _x1 = graphyUnitToPixel(prevX, 'x', meta);
+        var _x2 = graphyUnitToPixel(nextX, 'x', meta);
+        var _y1 = graphyUnitToPixel(prevY, 'y', meta);
+        var _y2 = graphyUnitToPixel(nextY, 'y', meta);
         graphyDrawSolidLine(context, _x1, _y1, _x2, _y2);
 
         prevX = nextX;
