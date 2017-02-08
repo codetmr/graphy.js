@@ -116,9 +116,9 @@ var graphy = function(dom, data) {
                 var _x = graphyUnitToPixel(x, 'x', meta);
                 var _y = graphyUnitToPixel(y, 'y', meta);
                 if (shape === 'cross') {
-                    graphyPlotPointCircle(context, _x, _y, meta.MAIN_COLOR);
+                    graphyPlotPoint(context, _x, _y, meta.MAIN_COLOR, 'circle');
                 } else {
-                    graphyPlotPointCross(context, _x, _y);
+                    graphyPlotPoint(context, _x, _y, meta.MAIN_COLOR);
                 }
             }
         },

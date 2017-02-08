@@ -1,29 +1,22 @@
 /**
- * Plot Circle Point on canvas
+ * Plot Point on canvas
  * @param  {[type]} x        [description]
  * @param  {[type]} y        [description]
  * @param  {[type]} selected [description]
  * @return {[type]}          [description]
  */
-function graphyPlotPointCross(context, x, y) {
-    graphyDrawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
-    graphyDrawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
-}
-
-/**
- * Plot Cross Point on canvas
- * @param  {[type]} x        [description]
- * @param  {[type]} y        [description]
- * @param  {[type]} selected [description]
- * @return {[type]}          [description]
- */
-function graphyPlotPointCircle(context, x, y, color) {
-    context.beginPath();
-    context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
-    context.fill();
-    context.stroke();
-    context.fillStyle = color;
-    context.strokeStyle = color;
+function graphyPlotPoint(context, x, y, color, shape) {
+    if (shape == null || shape == 'cross') {
+        graphyDrawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
+        graphyDrawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
+    } else if (shape == 'circle' || shape == 'point') {
+        context.beginPath();
+        context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
+        context.fill();
+        context.stroke();
+        context.fillStyle = color;
+        context.strokeStyle = color;
+    }
 }
 
 /**
