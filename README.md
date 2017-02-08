@@ -1,11 +1,6 @@
 ### Introduction
 
-Graphy.js is a Javascript library to draw 2D graph on browsers. The main drawing technology is based on HTML5 canvas.
-
-Graphy.js main features (updated):
-
-  - Setup & display 2D graph functions with APIs
-  - User interactions with graph, i.e drawing, sketching via onscreen tools
+Graphy.js is a Javascript library to display 2D graph functions on browsers. The main drawing technology is based on HTML5 canvas.
 
 ### Installation
 
@@ -30,14 +25,14 @@ var graph = graphy(div);
 
 ### Roadmap
 
-APIs for basic 2D graph functions. This includes APIs for:
- - Setting up & displaying points, lines, polynomials, circles, trigonometric functions & transcendental functions.
- - Importing and Exporting data for the graph, in JSON, for storing & restoring.
-
-On screen tools for drawings. This includes tools for:
- - Setting points, sketching lines, free hand drawing
+APIs for basic 2D graph functions. This includes APIs for setting up & displaying:
+ - Points
+ - Lines
+ - Polynomials
+ - Circles
+ - Trigonometric functions
+ - Transcendental functions.
  - Input Text Enabled. Apply Mathquill for nice math rendering
- - State saving, undo & redo snapshots.
  
 ### License
 MIT
