@@ -1,30 +1,55 @@
 var graphy = function(dom, data) {
     // CONSTANT variable
-    var CVS_WIDTH = 500;
-    var CVS_HEIGHT = 500;
-    var VERTICAL_NAME = 'y';
-    var HORIZONTAL_NAME = 'x';
-    var MAX_X_UNIT = 5;
-    var MIN_X_UNIT = -5;
-    var MAX_Y_UNIT = 5;
-    var MIN_Y_UNIT = -5;
-    var INTERVAL_UNIT = 1;
-    var MARGIN_PX = 10;
-    var PADDING_PX = 15;
-    var ARROW_SZ_PX = 5;
-    var POINT_RAD_PX = 2;
-    var MAIN_COLOR = "#000";
-    var POLY_SEGMENT = 0.1;
-    var ID = 'graphy.js_' + Date.now();
+    var meta = {
+        CVS_WIDTH       : 500,
+        CVS_HEIGHT      : 500,
+        VERTICAL_NAME   : 'y',
+        HORIZONTAL_NAME : 'x',
+        MAX_X_UNIT      : 5,
+        MIN_X_UNIT      : -5,
+        MAX_Y_UNIT      : 5,
+        MIN_Y_UNIT      : -5,
+        INTERVAL_UNIT   : 1,
+        MARGIN_PX       : 10,
+        PADDING_PX      : 15,
+        ARROW_SZ_PX     : 5,
+        POINT_RAD_PX    : 2,
+        MAIN_COLOR      : "#000",
+        POLY_SEGMENT    : 0.1,
+        ID              : 'graphy.js_' + Date.now(),
+        DIVISION_X      : null,
+        DIVISION_Y      : null,
+        ORIGIN_X        : null,
+        ORIGIN_Y        : null,
+    };
+
+    if (data != null) {
+        if (data.id) meta.ID = data.id;
+        if (data.verticalName) meta.VERTICAL_NAME = data.verticalName;
+        if (data.horizontalName) meta.HORIZONTAL_NAME = data.horizontalName;
+        if (data.height) meta.CVS_HEIGHT = data.height;
+        if (data.width) meta.CVS_WIDTH = data.width;
+        if (data.xMax) meta.MAX_X_UNIT = parseInt(data.xMax);
+        if (data.xMin) meta.MIN_X_UNIT = parseInt(data.xMin);
+        if (data.yMax) meta.MAX_Y_UNIT = parseInt(data.yMax);
+        if (data.yMin) meta.MIN_Y_UNIT = parseInt(data.yMin);
+        if (data.interval) meta.INTERVAL_UNIT = data.interval;
+
+        // Primary check for data
+        if (meta.MAX_X_UNIT < meta.MIN_X_UNIT) {
+            console.log("Error: Wrong input for x boundaries");
+            return;
+        }
+
+        if (meta.MAX_Y_UNIT < meta.MIN_Y_UNIT) {
+            console.log("Error: Wrong input for y boundaries");
+            return;
+        }
+    }
 
     // Canvas Setup
-    var canvas = setEmptyCanvas(ID, dom, CVS_WIDTH, CVS_HEIGHT);
+    var canvas = graphySetEmptyCanvas(meta, dom);
     var context = canvas.getContext("2d");
-    var divisionX = null;
-    var divisionY = null;
-    var originY = null;
-    var originX = null;
-
     init();
 
     /**
@@ -32,95 +57,66 @@ var graphy = function(dom, data) {
      * @return {[type]} [description]
      */
     function init() {
-        // Process graph position data
-        divisionX = (CVS_WIDTH - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_X_UNIT - MIN_X_UNIT);
-        divisionY = (CVS_HEIGHT - 2 * MARGIN_PX - 2 * PADDING_PX) / (MAX_Y_UNIT - MIN_Y_UNIT);
-        originY = null;
-        if (MAX_Y_UNIT > 0 && MIN_Y_UNIT < 0) {
-            originY = MARGIN_PX + PADDING_PX + divisionY * MAX_Y_UNIT;
+        // Setup graph metrics
+        meta.DIVISION_X = (meta.CVS_WIDTH - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_X_UNIT - meta.MIN_X_UNIT);
+        meta.DIVISION_Y = (meta.CVS_HEIGHT - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_Y_UNIT - meta.MIN_Y_UNIT);
+        if (meta.MAX_Y_UNIT > 0 && meta.MIN_Y_UNIT < 0) {
+            meta.ORIGIN_Y = meta.MARGIN_PX + meta.PADDING_PX + meta.DIVISION_Y * meta.MAX_Y_UNIT;
         }
-        originX = null;
-        if (MAX_X_UNIT > 0 && MIN_X_UNIT < 0) {
-            originX = MARGIN_PX + PADDING_PX + divisionX * Math.abs(MIN_X_UNIT);
+        if (meta.MAX_X_UNIT > 0 && meta.MIN_X_UNIT < 0) {
+            meta.ORIGIN_X = meta.MARGIN_PX + meta.PADDING_PX + meta.DIVISION_X * Math.abs(meta.MIN_X_UNIT);
         }
 
         // Draw Axes if necessary
-        if (originY) {
-            graphyDrawSolidLine(context, MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX, originY, MAIN_COLOR);
+        if (meta.ORIGIN_Y) {
+            graphyDrawSolidLine(context, meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.MAIN_COLOR);
 
             // Draw the arrow head
             graphyDrawSolidLine(context, 
-                CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY - ARROW_SZ_PX);
+                meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y - meta.ARROW_SZ_PX);
             graphyDrawSolidLine(context, 
-                CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY + ARROW_SZ_PX);
+                meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y + meta.ARROW_SZ_PX);
             context.fillText(
-                HORIZONTAL_NAME, CVS_WIDTH - MARGIN_PX, originY - MARGIN_PX
+                meta.HORIZONTAL_NAME, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y - meta.MARGIN_PX
                 );
         }
-        if (originX) {
-            graphyDrawSolidLine(context, originX, MARGIN_PX, originX, CVS_HEIGHT - MARGIN_PX, MAIN_COLOR);
+        if (meta.ORIGIN_X) {
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X, meta.CVS_HEIGHT - meta.MARGIN_PX, meta.MAIN_COLOR);
 
             // Draw the arrow head
-            graphyDrawSolidLine(context, originX, MARGIN_PX, originX - ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
-            graphyDrawSolidLine(context, originX, MARGIN_PX, originX + ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X - meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X + meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
             context.fillText(
-                VERTICAL_NAME, originX + MARGIN_PX, MARGIN_PX
+                meta.VERTICAL_NAME, meta.ORIGIN_X + meta.MARGIN_PX, meta.MARGIN_PX
                 );
         }
-        context.fillText(0, originX + 5, originY + 15);
+        context.fillText(0, meta.ORIGIN_X + 5, meta.ORIGIN_Y + 15);
 
         // Draw the intervals
-        for (var i = MIN_X_UNIT; i <= MAX_X_UNIT; i += INTERVAL_UNIT) {
+        for (var i = meta.MIN_X_UNIT; i <= meta.MAX_X_UNIT; i += meta.INTERVAL_UNIT) {
             if (i != 0) {
-                var _x = MARGIN_PX + PADDING_PX + (i - MIN_X_UNIT) * divisionX;
-                graphyDrawSolidLine(context, _x, originY + 5, _x, originY - 5, MAIN_COLOR);
-                context.fillText(i, _x, originY + 15);
+                var _x = meta.MARGIN_PX + meta.PADDING_PX + (i - meta.MIN_X_UNIT) * meta.DIVISION_X;
+                graphyDrawSolidLine(context, _x, meta.ORIGIN_Y + 5, _x, meta.ORIGIN_Y - 5, meta.MAIN_COLOR);
+                context.fillText(i, _x, meta.ORIGIN_Y + 15);
             }
         }
-        for (var i = MAX_Y_UNIT; i >= MIN_Y_UNIT; i -= INTERVAL_UNIT) {
+        for (var i = meta.MAX_Y_UNIT; i >= meta.MIN_Y_UNIT; i -= meta.INTERVAL_UNIT) {
             if (i != 0) {
-                var _y = MARGIN_PX + PADDING_PX + (MAX_Y_UNIT - i) * divisionY;
-                graphyDrawSolidLine(context, originX - 5, _y, originX + 5, _y, MAIN_COLOR);
-                context.fillText(i, originX + 5, _y + 5);
+                var _y = meta.MARGIN_PX + meta.PADDING_PX + (meta.MAX_Y_UNIT - i) * meta.DIVISION_Y;
+                graphyDrawSolidLine(context, meta.ORIGIN_X - 5, _y, meta.ORIGIN_X + 5, _y, meta.MAIN_COLOR);
+                context.fillText(i, meta.ORIGIN_X + 5, _y + 5);
             }
         }
     }
 
     // Public Object APIs
     return {
-        setup: function(data) {
-            if (data != null) {
-                if (data.id) ID = data.id;
-                if (data.verticalName) VERTICAL_NAME = data.verticalName;
-                if (data.horizontalName) HORIZONTAL_NAME = data.horizontalName;
-                if (data.height) CVS_HEIGHT = data.height;
-                if (data.width) CVS_WIDTH = data.width;
-                if (data.xMax) MAX_X_UNIT = parseInt(data.xMax);
-                if (data.xMin) MIN_X_UNIT = parseInt(data.xMin);
-                if (data.yMax) MAX_Y_UNIT = parseInt(data.yMax);
-                if (data.yMin) MIN_Y_UNIT = parseInt(data.yMin);
-                if (data.interval) INTERVAL_UNIT = data.interval;
-
-                // Primary check for data
-                if (MAX_X_UNIT < MIN_X_UNIT) {
-                    console.log("Error: Wrong input for x boundaries");
-                    return;
-                }
-
-                if (MAX_Y_UNIT < MIN_Y_UNIT) {
-                    console.log("Error: Wrong input for y boundaries");
-                    return;
-                }
-
-                init();
-            }
-        },
         plotPoint: function(x, y, shape) {
             if (x != null && y != null) {
-                var _x = unitToPixel(x, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                var _y = unitToPixel(y, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
+                var _x = graphyUnitToPixel(x, 'x', meta);
+                var _y = graphyUnitToPixel(y, 'y', meta);
                 if (shape === 'cross') {
-                    graphyPlotPointCircle(context, _x, _y, MAIN_COLOR);
+                    graphyPlotPointCircle(context, _x, _y, meta.MAIN_COLOR);
                 } else {
                     graphyPlotPointCross(context, _x, _y);
                 }
@@ -128,8 +124,8 @@ var graphy = function(dom, data) {
         },
         drawPoly: function(para, rangeX) {
             if (para != null) {
-                var startX = MIN_X_UNIT;
-                var endX = MAX_X_UNIT;
+                var startX = meta.MIN_X_UNIT;
+                var endX = meta.MAX_X_UNIT;
                 if (rangeX) {
                     if (rangeX[0] && startX < rangeX[0]) {
                         startX = rangeX[0];
@@ -144,18 +140,14 @@ var graphy = function(dom, data) {
                     var startY = para[0] * startX + para[1];
                     var endY = para[0] * endX + para[1];
 
-                    var _x1 = unitToPixel(
-                        startX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _x2 = unitToPixel(
-                        endX, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _y1 = unitToPixel(
-                        startY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    var _y2 = unitToPixel(
-                        endY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, MAIN_COLOR);
+                    var _x1 = graphyUnitToPixel(startX, 'x', meta);
+                    var _x2 = graphyUnitToPixel(endX, 'x', meta);
+                    var _y1 = graphyUnitToPixel(startY, 'y', meta);
+                    var _y2 = graphyUnitToPixel(endY, 'y', meta);
+                    graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
                 } else if (para.length > 2) {
                     var segment = data.polynomials[i].segment ?
-                        parseFloat(data.polynomials[i]) : POLY_SEGMENT;
+                        parseFloat(data.polynomials[i]) : meta.POLY_SEGMENT;
                     graphyDrawPoly(context, startX, endX, para, segment);
                 }
             }

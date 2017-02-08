@@ -1,9 +1,9 @@
-function unitToPixel(unit, direction, marginPx, paddingPx, min_x_unit, max_y_unit, divisionX, divisionY) {
+function graphyUnitToPixel(unit, direction, meta) {
     unit = parseFloat(unit);
     if (direction === 'x') {
-        return marginPx + paddingPx + (unit - min_x_unit) * divisionX;
+        return meta.MARGIN_PX + meta.PADDING_PX + (unit - meta.MIN_X_UNIT) * meta.DIVISION_X;
     } else if (direction === 'y') {
-        return marginPx + paddingPx + (max_y_unit - unit) * divisionY;
+        return meta.MARGIN_PX + meta.PADDING_PX + (meta.MAX_Y_UNIT - unit) * meta.DIVISION_Y;
     } else {
         console.log('Direction is not defined');
     }
@@ -12,14 +12,14 @@ function unitToPixel(unit, direction, marginPx, paddingPx, min_x_unit, max_y_uni
 /**
  * Set empty canvas
  */
-function setEmptyCanvas(_id, _dom, _witdh, _height) {
-    var _canvas = document.getElementById(_id);
+function graphySetEmptyCanvas(meta, dom) {
+    var _canvas = document.getElementById(meta.ID);
     if (_canvas == null) {
-        _canvas = graphyCreateElement('canvas', _id, null, '', _dom);
+        _canvas = graphyCreateElement('canvas', meta.ID, null, '', dom);
     }
 
-    _canvas.width = _witdh;
-    _canvas.height = _height;
+    _canvas.width = meta.CVS_WIDTH;
+    _canvas.height = meta.CVS_HEIGHT;
     _canvas.style.border = '1px solid lightgray';
     _canvas.getContext("2d").font = "12px verdana";
     return _canvas;
@@ -34,19 +34,19 @@ function setEmptyCanvas(_id, _dom, _witdh, _height) {
  * @param  {DOM}    _parent    Parent DOM
  * @return {DOM}               Newly created DOM
  */
-function graphyCreateElement(_dom, _id, _classname, _html, _parent) {
-    var _dom = document.createElement(_dom);
-    if (_id != null) {
-        _dom.id = _id;
+function graphyCreateElement(dom, id, classname, html, parent) {
+    var _dom = document.createElement(dom);
+    if (id != null) {
+        _dom.id = id;
     }
-    if (_classname != null) {
-        _dom.className = _classname;
+    if (classname != null) {
+        _dom.className = classname;
     }
-    if (_html != null) {
-        _dom.innerHTML = _html;
+    if (html != null) {
+        _dom.innerHTML = html;
     }
-    if (_parent != null) {
-        _parent.appendChild(_dom);
+    if (parent != null) {
+        parent.appendChild(_dom);
     }
     return _dom;
 }
