@@ -46,23 +46,23 @@ var graphy = function(dom, data) {
 
         // Draw Axes if necessary
         if (originY) {
-            drawSolidLine(context, MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX, originY, MAIN_COLOR);
+            graphyDrawSolidLine(context, MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX, originY, MAIN_COLOR);
 
             // Draw the arrow head
-            drawSolidLine(context, 
+            graphyDrawSolidLine(context, 
                 CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY - ARROW_SZ_PX);
-            drawSolidLine(context, 
+            graphyDrawSolidLine(context, 
                 CVS_WIDTH - MARGIN_PX, originY, CVS_WIDTH - MARGIN_PX - ARROW_SZ_PX, originY + ARROW_SZ_PX);
             context.fillText(
                 HORIZONTAL_NAME, CVS_WIDTH - MARGIN_PX, originY - MARGIN_PX
                 );
         }
         if (originX) {
-            drawSolidLine(context, originX, MARGIN_PX, originX, CVS_HEIGHT - MARGIN_PX, MAIN_COLOR);
+            graphyDrawSolidLine(context, originX, MARGIN_PX, originX, CVS_HEIGHT - MARGIN_PX, MAIN_COLOR);
 
             // Draw the arrow head
-            drawSolidLine(context, originX, MARGIN_PX, originX - ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
-            drawSolidLine(context, originX, MARGIN_PX, originX + ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
+            graphyDrawSolidLine(context, originX, MARGIN_PX, originX - ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
+            graphyDrawSolidLine(context, originX, MARGIN_PX, originX + ARROW_SZ_PX, MARGIN_PX + ARROW_SZ_PX, MAIN_COLOR);
             context.fillText(
                 VERTICAL_NAME, originX + MARGIN_PX, MARGIN_PX
                 );
@@ -73,14 +73,14 @@ var graphy = function(dom, data) {
         for (var i = MIN_X_UNIT; i <= MAX_X_UNIT; i += INTERVAL_UNIT) {
             if (i != 0) {
                 var _x = MARGIN_PX + PADDING_PX + (i - MIN_X_UNIT) * divisionX;
-                drawSolidLine(context, _x, originY + 5, _x, originY - 5, MAIN_COLOR);
+                graphyDrawSolidLine(context, _x, originY + 5, _x, originY - 5, MAIN_COLOR);
                 context.fillText(i, _x, originY + 15);
             }
         }
         for (var i = MAX_Y_UNIT; i >= MIN_Y_UNIT; i -= INTERVAL_UNIT) {
             if (i != 0) {
                 var _y = MARGIN_PX + PADDING_PX + (MAX_Y_UNIT - i) * divisionY;
-                drawSolidLine(context, originX - 5, _y, originX + 5, _y, MAIN_COLOR);
+                graphyDrawSolidLine(context, originX - 5, _y, originX + 5, _y, MAIN_COLOR);
                 context.fillText(i, originX + 5, _y + 5);
             }
         }
@@ -120,9 +120,9 @@ var graphy = function(dom, data) {
                 var _x = unitToPixel(x, 'x', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
                 var _y = unitToPixel(y, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
                 if (shape === 'cross') {
-                    plotPointCircle(context, _x, _y, MAIN_COLOR);
+                    graphyPlotPointCircle(context, _x, _y, MAIN_COLOR);
                 } else {
-                    plotPointCross(context, _x, _y);
+                    graphyPlotPointCross(context, _x, _y);
                 }
             }
         },
@@ -152,11 +152,11 @@ var graphy = function(dom, data) {
                         startY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
                     var _y2 = unitToPixel(
                         endY, 'y', MARGIN_PX, PADDING_PX, MIN_X_UNIT, MAX_Y_UNIT, divisionX, divisionY);
-                    drawSolidLine(context, _x1, _y1, _x2, _y2, MAIN_COLOR);
+                    graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, MAIN_COLOR);
                 } else if (para.length > 2) {
                     var segment = data.polynomials[i].segment ?
                         parseFloat(data.polynomials[i]) : POLY_SEGMENT;
-                    drawPoly(context, startX, endX, para, segment);
+                    graphyDrawPoly(context, startX, endX, para, segment);
                 }
             }
         }

@@ -5,7 +5,7 @@
  * @param  {[type]} selected [description]
  * @return {[type]}          [description]
  */
-function plotPointCross(context, x, y) {
+function graphyPlotPointCross(context, x, y) {
     drawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
     drawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
 }
@@ -17,7 +17,7 @@ function plotPointCross(context, x, y) {
  * @param  {[type]} selected [description]
  * @return {[type]}          [description]
  */
-function plotPointCircle(context, x, y, color) {
+function graphyPlotPointCircle(context, x, y, color) {
     context.beginPath();
     context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
     context.fill();
@@ -33,7 +33,7 @@ function plotPointCircle(context, x, y, color) {
  * @param  {[type]} para   [description]
  * @return {[type]}        [description]
  */
-function drawPoly(context, startX, endX, para, segment) {
+function graphyDrawPoly(context, startX, endX, para, segment) {
     if (segment <= 0) {
         console.log('Segment is not positive');
         return;
@@ -73,7 +73,7 @@ function drawPoly(context, startX, endX, para, segment) {
  * @param  {[type]} toY   [description]
  * @return {[type]}       [description]
  */
-function drawSolidLine(context, fromX, fromY, toX, toY, color) {
+function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
     context.beginPath();
     context.moveTo(fromX, fromY);
     context.lineTo(toX, toY);
