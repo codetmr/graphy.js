@@ -19,6 +19,19 @@ function graphyPlotPoint(context, x, y, color, shape) {
     }
 }
 
+function graphyDrawLine(context, start, end, meta) {
+    var startX = start[0];
+    var endX = end[0];
+    var startY = start[1];
+    var endY = end[1];
+
+    var _x1 = graphyUnitToPixel(startX, 'x', meta);
+    var _x2 = graphyUnitToPixel(endX, 'x', meta);
+    var _y1 = graphyUnitToPixel(startY, 'y', meta);
+    var _y2 = graphyUnitToPixel(endY, 'y', meta);
+    graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
+}
+
 /**
  * Function to draw polynomials
  * @param  {[type]} startX [description]

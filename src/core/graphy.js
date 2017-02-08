@@ -122,6 +122,11 @@ var graphy = function(dom, data) {
                 }
             }
         },
+        drawLine: function(start, end) {
+            if (start != null && end != null) {
+                graphyDrawLine(context, start, end, meta);
+            }
+        },
         drawPoly: function(para, rangeX) {
             if (para != null) {
                 var startX = meta.MIN_X_UNIT;
@@ -135,21 +140,9 @@ var graphy = function(dom, data) {
                     }
                 }
 
-                // Linear polynomials
-                if (para.length === 2) {
-                    var startY = para[0] * startX + para[1];
-                    var endY = para[0] * endX + para[1];
-
-                    var _x1 = graphyUnitToPixel(startX, 'x', meta);
-                    var _x2 = graphyUnitToPixel(endX, 'x', meta);
-                    var _y1 = graphyUnitToPixel(startY, 'y', meta);
-                    var _y2 = graphyUnitToPixel(endY, 'y', meta);
-                    graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
-                } else if (para.length > 2) {
-                    var segment = data.polynomials[i].segment ?
-                        parseFloat(data.polynomials[i]) : meta.POLY_SEGMENT;
-                    graphyDrawPoly(context, startX, endX, para, segment);
-                }
+                var segment = data.polynomials[i].segment ?
+                    parseFloat(data.polynomials[i]) : meta.POLY_SEGMENT;
+                graphyDrawPoly(context, startX, endX, para, segment);
             }
         }
     }
