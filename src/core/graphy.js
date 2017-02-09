@@ -142,6 +142,11 @@ var graphy = function(dom, data) {
 
                 graphyDrawPoly(context, startX, endX, para, meta);
             }
+        },
+        drawCircle: function(point, radius) {
+            if (point != null && radius != null) {
+                graphyDrawCircle(context, point[0], point[1], radius, meta);
+            }
         }
     }
 }

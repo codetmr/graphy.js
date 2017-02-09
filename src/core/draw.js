@@ -72,7 +72,7 @@ function graphyDrawPoly(context, startX, endX, para, meta) {
         var _x2 = graphyUnitToPixel(nextX, 'x', meta);
         var _y1 = graphyUnitToPixel(prevY, 'y', meta);
         var _y2 = graphyUnitToPixel(nextY, 'y', meta);
-        graphyDrawSolidLine(context, _x1, _y1, _x2, _y2);
+        graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
 
         prevX = nextX;
         prevY = nextY;
@@ -96,11 +96,20 @@ function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
     context.strokeStyle = color;
 }
 
+/**
+ * Function to draw circles
+ * @param  {[type]} context [description]
+ * @param  {[type]} centerX [description]
+ * @param  {[type]} centerY [description]
+ * @param  {[type]} radius  [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawCircle(context, centerX, centerY, radius, meta) {
     context.beginPath();
-    context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
+    context.arc(centerX, centerY, radius, 0, 2*Math.PI);
     context.fill();
     context.stroke();
-    context.fillStyle = color;
-    context.strokeStyle = color;
+    context.fillStyle = meta.MAIN_COLOR;
+    context.strokeStyle = meta.MAIN_COLOR;
 }
