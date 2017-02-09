@@ -5,20 +5,28 @@
  * @param  {[type]} selected [description]
  * @return {[type]}          [description]
  */
-function graphyPlotPoint(context, x, y, color, shape) {
+function graphyPlotPoint(context, x, y, shape, meta) {
     if (shape == null || shape == 'cross') {
         graphyDrawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
         graphyDrawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
     } else if (shape == 'circle' || shape == 'point') {
         context.beginPath();
-        context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
+        context.arc(x, y, meta.POINT_RAD_PX, 0, 2*Math.PI);
         context.fill();
         context.stroke();
-        context.fillStyle = color;
-        context.strokeStyle = color;
+        context.fillStyle = meta.MAIN_COLOR;
+        context.strokeStyle = meta.MAIN_COLOR;
     }
 }
 
+/**
+ * Draw lines on canvas with 2 end points
+ * @param  {[type]} context [description]
+ * @param  {[type]} start   [description]
+ * @param  {[type]} end     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawLine(context, start, end, meta) {
     var startX = start[0];
     var endX = end[0];
@@ -85,5 +93,14 @@ function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
     context.lineTo(toX, toY);
     context.closePath();                
     context.stroke();
+    context.strokeStyle = color;
+}
+
+function graphyDrawCircle(context, centerX, centerY, radius, meta) {
+    context.beginPath();
+    context.arc(x, y, POINT_RAD_PX, 0, 2*Math.PI);
+    context.fill();
+    context.stroke();
+    context.fillStyle = color;
     context.strokeStyle = color;
 }
