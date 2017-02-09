@@ -108,8 +108,6 @@ function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
 function graphyDrawCircle(context, centerX, centerY, radius, meta) {
     context.beginPath();
     context.arc(centerX, centerY, radius, 0, 2*Math.PI);
-    context.fill();
     context.stroke();
-    context.fillStyle = meta.MAIN_COLOR;
     context.strokeStyle = meta.MAIN_COLOR;
 }

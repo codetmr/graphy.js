@@ -145,7 +145,12 @@ var graphy = function(dom, data) {
         },
         drawCircle: function(point, radius) {
             if (point != null && radius != null) {
-                graphyDrawCircle(context, point[0], point[1], radius, meta);
+                if (point[0] != null && point[1] != null) {
+                    var _centerX = graphyUnitToPixel(point[0], 'x', meta);
+                    var _centerY = graphyUnitToPixel(point[1], 'y', meta);
+                    var _radius = radius * meta.DIVISION_X;
+                    graphyDrawCircle(context, _centerX, _centerY, _radius, meta);
+                }
             }
         }
     }
