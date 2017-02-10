@@ -110,4 +110,11 @@ function graphyDrawCircle(context, centerX, centerY, radius, meta) {
     context.arc(centerX, centerY, radius, 0, 2*Math.PI);
     context.stroke();
     context.strokeStyle = meta.MAIN_COLOR;
+
+    context.beginPath();
+    context.arc(centerX, centerY, meta.POINT_RAD_PX, 0, 2*Math.PI);
+    context.fill();
+    context.stroke();
+    context.fillStyle = meta.MAIN_COLOR;
+    context.strokeStyle = meta.MAIN_COLOR;
 }
