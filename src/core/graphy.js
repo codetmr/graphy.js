@@ -58,8 +58,10 @@ var graphy = function(dom, data) {
      */
     function init() {
         // Setup graph metrics
-        meta.DIVISION_X = (meta.CVS_WIDTH - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_X_UNIT - meta.MIN_X_UNIT);
-        meta.DIVISION_Y = (meta.CVS_HEIGHT - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_Y_UNIT - meta.MIN_Y_UNIT);
+        meta.DIVISION_X = 
+            (meta.CVS_WIDTH - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_X_UNIT - meta.MIN_X_UNIT);
+        meta.DIVISION_Y = 
+            (meta.CVS_HEIGHT - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_Y_UNIT - meta.MIN_Y_UNIT);
         if (meta.MAX_Y_UNIT > 0 && meta.MIN_Y_UNIT < 0) {
             meta.ORIGIN_Y = meta.MARGIN_PX + meta.PADDING_PX + meta.DIVISION_Y * meta.MAX_Y_UNIT;
         }
@@ -69,23 +71,27 @@ var graphy = function(dom, data) {
 
         // Draw Axes if necessary
         if (meta.ORIGIN_Y) {
-            graphyDrawSolidLine(context, meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.MARGIN_PX, meta.ORIGIN_Y, 
+                meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.MAIN_COLOR);
 
             // Draw the arrow head
-            graphyDrawSolidLine(context, 
-                meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y - meta.ARROW_SZ_PX);
-            graphyDrawSolidLine(context, 
-                meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y + meta.ARROW_SZ_PX);
+            graphyDrawSolidLine(context, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, 
+                meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y - meta.ARROW_SZ_PX);
+            graphyDrawSolidLine(context, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y, 
+                meta.CVS_WIDTH - meta.MARGIN_PX - meta.ARROW_SZ_PX, meta.ORIGIN_Y + meta.ARROW_SZ_PX);
             context.fillText(
                 meta.HORIZONTAL_NAME, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y - meta.MARGIN_PX
                 );
         }
         if (meta.ORIGIN_X) {
-            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X, meta.CVS_HEIGHT - meta.MARGIN_PX, meta.MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X, 
+                meta.CVS_HEIGHT - meta.MARGIN_PX, meta.MAIN_COLOR);
 
             // Draw the arrow head
-            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X - meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
-            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X + meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, 
+                meta.ORIGIN_X - meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
+            graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, 
+                meta.ORIGIN_X + meta.ARROW_SZ_PX, meta.MARGIN_PX + meta.ARROW_SZ_PX, meta.MAIN_COLOR);
             context.fillText(
                 meta.VERTICAL_NAME, meta.ORIGIN_X + meta.MARGIN_PX, meta.MARGIN_PX
                 );
@@ -111,7 +117,7 @@ var graphy = function(dom, data) {
 
     // Public Object APIs
     return {
-        plotPoint: function(x, y, shape) {
+        point: function(x, y, shape) {
             if (x != null && y != null) {
                 var _x = graphyUnitToPixel(x, 'x', meta);
                 var _y = graphyUnitToPixel(y, 'y', meta);
@@ -122,12 +128,12 @@ var graphy = function(dom, data) {
                 }
             }
         },
-        drawLine: function(start, end) {
+        line: function(start, end) {
             if (start != null && end != null) {
                 graphyDrawLine(context, start, end, meta);
             }
         },
-        drawPoly: function(para, rangeX) {
+        poly: function(para, rangeX) {
             if (para != null) {
                 var startX = meta.MIN_X_UNIT;
                 var endX = meta.MAX_X_UNIT;
@@ -143,7 +149,7 @@ var graphy = function(dom, data) {
                 graphyDrawPoly(context, startX, endX, para, meta);
             }
         },
-        drawCircle: function(point, radius) {
+        circle: function(point, radius) {
             if (point != null && radius != null) {
                 if (point[0] != null && point[1] != null) {
                     var _centerX = graphyUnitToPixel(point[0], 'x', meta);
