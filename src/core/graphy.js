@@ -190,6 +190,38 @@ var graphy = function(dom, data) {
 
                 graphyDrawCosine(context, startX, endX, mag, meta);
             }
+        },
+        tan: function(mag, rangeX) {
+            if (mag != null) {
+                var startX = meta.MIN_X_UNIT;
+                var endX = meta.MAX_X_UNIT;
+                if (rangeX) {
+                    if (rangeX[0] && startX < rangeX[0]) {
+                        startX = rangeX[0];
+                    }
+                    if (rangeX[1] && endX > rangeX[1]) {
+                        endX = rangeX[1];
+                    }
+                }
+
+                graphyDrawTangent(context, startX, endX, mag, meta);
+            }
+        },
+        cot: function(mag, rangeX) {
+            if (mag != null) {
+                var startX = meta.MIN_X_UNIT;
+                var endX = meta.MAX_X_UNIT;
+                if (rangeX) {
+                    if (rangeX[0] && startX < rangeX[0]) {
+                        startX = rangeX[0];
+                    }
+                    if (rangeX[1] && endX > rangeX[1]) {
+                        endX = rangeX[1];
+                    }
+                }
+
+                graphyDrawTangent(context, startX, endX, mag, meta);
+            }
         }
     }
 }

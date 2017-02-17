@@ -172,3 +172,57 @@ function graphyDrawCosine(context, startX, endX, mag, meta) {
         prevY = nextY;
     }
 }
+
+function graphyDrawTangent(context, startX, endX, mag, meta) {
+    if (meta.POLY_SEGMENT <= 0) {
+        console.log('Segment is not positive');
+        return;
+    }
+
+    var prevX = startX;
+    var prevY = null;
+    var nextX = null;
+    var nextY = null;
+
+    while (prevX <= endX) {
+        prevY = mag * Math.tan(prevX);
+        nextX = prevX + meta.POLY_SEGMENT;
+        nextY = mag * Math.tan(nextX);
+
+        var _x1 = graphyUnitToPixel(prevX, 'x', meta);
+        var _x2 = graphyUnitToPixel(nextX, 'x', meta);
+        var _y1 = graphyUnitToPixel(prevY, 'y', meta);
+        var _y2 = graphyUnitToPixel(nextY, 'y', meta);
+        graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
+
+        prevX = nextX;
+        prevY = nextY;
+    }
+}
+
+function graphyDrawCotantgent(context, startX, endX, mag, meta) {
+    if (meta.POLY_SEGMENT <= 0) {
+        console.log('Segment is not positive');
+        return;
+    }
+
+    var prevX = startX;
+    var prevY = null;
+    var nextX = null;
+    var nextY = null;
+
+    while (prevX <= endX) {
+        prevY = mag * Math.cot(prevX);
+        nextX = prevX + meta.POLY_SEGMENT;
+        nextY = mag * Math.cot(nextX);
+
+        var _x1 = graphyUnitToPixel(prevX, 'x', meta);
+        var _x2 = graphyUnitToPixel(nextX, 'x', meta);
+        var _y1 = graphyUnitToPixel(prevY, 'y', meta);
+        var _y2 = graphyUnitToPixel(nextY, 'y', meta);
+        graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
+
+        prevX = nextX;
+        prevY = nextY;
+    }
+}
