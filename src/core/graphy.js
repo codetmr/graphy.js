@@ -174,6 +174,22 @@ var graphy = function(dom, data) {
 
                 graphyDrawSine(context, startX, endX, mag, meta);
             }
+        },
+        cos: function(mag, rangeX) {
+            if (mag != null) {
+                var startX = meta.MIN_X_UNIT;
+                var endX = meta.MAX_X_UNIT;
+                if (rangeX) {
+                    if (rangeX[0] && startX < rangeX[0]) {
+                        startX = rangeX[0];
+                    }
+                    if (rangeX[1] && endX > rangeX[1]) {
+                        endX = rangeX[1];
+                    }
+                }
+
+                graphyDrawCosine(context, startX, endX, mag, meta);
+            }
         }
     }
 }
