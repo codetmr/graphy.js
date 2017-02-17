@@ -222,6 +222,13 @@ var graphy = function(dom, data) {
 
                 graphyDrawTangent(context, startX, endX, mag, meta);
             }
+        },
+        log: function(base, max) {
+            if (max == null || max < 0 || max > meta.MAX_X_UNIT) {
+                max = meta.MAX_X_UNIT;
+            }
+
+            graphyDrawLog(context, base, max, meta);
         }
     }
 }

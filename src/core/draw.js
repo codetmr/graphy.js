@@ -226,3 +226,35 @@ function graphyDrawCotantgent(context, startX, endX, mag, meta) {
         prevY = nextY;
     }
 }
+
+function graphyDrawLog(context, base, max, meta) {
+    if (meta.POLY_SEGMENT <= 0) {
+        console.log('Segment is not positive');
+        return;
+    }
+
+    var prevX = meta.POLY_SEGMENT;
+    var prevY = null;
+    var nextX = null;
+    var nextY = null;
+
+    var denominator = 1;
+    if (base != null && base != 'e') {
+        denominator = Math.abs(base);
+    }
+
+    while (prevX <= max) {
+        prevY = Math.log(prevX) / denominator;
+        nextX = prevX + meta.POLY_SEGMENT;
+        nextY = Math.log(nextX) / denominator;
+
+        var _x1 = graphyUnitToPixel(prevX, 'x', meta);
+        var _x2 = graphyUnitToPixel(nextX, 'x', meta);
+        var _y1 = graphyUnitToPixel(prevY, 'y', meta);
+        var _y2 = graphyUnitToPixel(nextY, 'y', meta);
+        graphyDrawSolidLine(context, _x1, _y1, _x2, _y2, meta.MAIN_COLOR);
+
+        prevX = nextX;
+        prevY = nextY;
+    }
+}
