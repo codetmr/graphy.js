@@ -10,12 +10,12 @@ function graphyPlotPoint(context, x, y, shape, meta) {
         graphyDrawSolidLine(context, x - 5, y - 5, x + 5, y + 5);
         graphyDrawSolidLine(context, x - 5, y + 5, x + 5, y - 5);
     } else if (shape == 'circle' || shape == 'point') {
+        context.strokeStyle = meta.MAIN_COLOR;
+        context.fillStyle = meta.MAIN_COLOR;
         context.beginPath();
         context.arc(x, y, meta.POINT_RAD_PX, 0, 2*Math.PI);
         context.fill();
         context.stroke();
-        context.fillStyle = meta.MAIN_COLOR;
-        context.strokeStyle = meta.MAIN_COLOR;
     }
 }
 
@@ -88,12 +88,12 @@ function graphyDrawPoly(context, startX, endX, para, meta) {
  * @return {[type]}       [description]
  */
 function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
+    context.strokeStyle = color;
     context.beginPath();
     context.moveTo(fromX, fromY);
     context.lineTo(toX, toY);
     context.closePath();                
     context.stroke();
-    context.strokeStyle = color;
 }
 
 /**
@@ -106,17 +106,15 @@ function graphyDrawSolidLine(context, fromX, fromY, toX, toY, color) {
  * @return {[type]}         [description]
  */
 function graphyDrawCircle(context, centerX, centerY, radius, meta) {
-    context.beginPath();
+    context.fillStyle = meta.MAIN_COLOR;
+    context.strokeStyle = meta.MAIN_COLOR;context.beginPath();
     context.arc(centerX, centerY, radius, 0, 2*Math.PI);
     context.stroke();
-    context.strokeStyle = meta.MAIN_COLOR;
 
     context.beginPath();
     context.arc(centerX, centerY, meta.POINT_RAD_PX, 0, 2*Math.PI);
     context.fill();
     context.stroke();
-    context.fillStyle = meta.MAIN_COLOR;
-    context.strokeStyle = meta.MAIN_COLOR;
 }
 
 function graphyDrawSine(context, startX, endX, mag, meta) {

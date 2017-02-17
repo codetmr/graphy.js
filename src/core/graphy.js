@@ -15,6 +15,7 @@ var graphy = function(dom, data) {
         ARROW_SZ_PX     : 5,
         POINT_RAD_PX    : 2,
         MAIN_COLOR      : "#000",
+        GRID_COLOR      : "blue",
         POLY_SEGMENT    : 0.1,
         ID              : 'graphy.js_' + Date.now(),
         DIVISION_X      : null,
@@ -62,6 +63,7 @@ var graphy = function(dom, data) {
             (meta.CVS_WIDTH - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_X_UNIT - meta.MIN_X_UNIT);
         meta.DIVISION_Y = 
             (meta.CVS_HEIGHT - 2 * meta.MARGIN_PX - 2 * meta.PADDING_PX) / (meta.MAX_Y_UNIT - meta.MIN_Y_UNIT);
+
         if (meta.MAX_Y_UNIT > 0 && meta.MIN_Y_UNIT < 0) {
             meta.ORIGIN_Y = meta.MARGIN_PX + meta.PADDING_PX + meta.DIVISION_Y * meta.MAX_Y_UNIT;
         }
@@ -82,6 +84,14 @@ var graphy = function(dom, data) {
             context.fillText(
                 meta.HORIZONTAL_NAME, meta.CVS_WIDTH - meta.MARGIN_PX, meta.ORIGIN_Y - meta.MARGIN_PX
                 );
+
+            console.log(meta.MIN_X_UNIT, meta.MAX_X_UNIT);
+
+            // Draw the grid
+            for (y = meta.MIN_Y_UNIT; y < meta.MAX_Y_UNIT; y += 0.2) {
+                graphyDrawLine(context, [meta.MIN_X_UNIT, y], 
+                    [meta.MAX_X_UNIT, y], meta.GRID_COLOR);
+            }
         }
         if (meta.ORIGIN_X) {
             graphyDrawSolidLine(context, meta.ORIGIN_X, meta.MARGIN_PX, meta.ORIGIN_X, 
