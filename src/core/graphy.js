@@ -131,10 +131,10 @@ var graphy = function(dom, data) {
             if (x != null && y != null) {
                 var _x = graphyUnitToPixel(x, 'x', meta);
                 var _y = graphyUnitToPixel(y, 'y', meta);
-                if (shape === 'cross') {
-                    graphyPlotPoint(context, _x, _y, meta.MAIN_COLOR, 'circle');
+                if (shape === null || shape === 'cross') {
+                    graphyPlotPoint(context, _x, _y, 'cross', meta);
                 } else {
-                    graphyPlotPoint(context, _x, _y, meta.MAIN_COLOR);
+                    graphyPlotPoint(context, _x, _y, 'circle', meta);
                 }
             }
         },
