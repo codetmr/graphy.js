@@ -117,6 +117,15 @@ function graphyDrawCircle(context, centerX, centerY, radius, meta) {
     context.stroke();
 }
 
+/**
+ * Function to draw sine functions
+ * @param  {[type]} context [description]
+ * @param  {[type]} startX  [description]
+ * @param  {[type]} endX    [description]
+ * @param  {[type]} mag     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawSine(context, startX, endX, mag, meta) {
     if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
@@ -144,6 +153,15 @@ function graphyDrawSine(context, startX, endX, mag, meta) {
     }
 }
 
+/**
+ * Function to draw cosine functions
+ * @param  {[type]} context [description]
+ * @param  {[type]} startX  [description]
+ * @param  {[type]} endX    [description]
+ * @param  {[type]} mag     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawCosine(context, startX, endX, mag, meta) {
     if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
@@ -171,6 +189,15 @@ function graphyDrawCosine(context, startX, endX, mag, meta) {
     }
 }
 
+/**
+ * Function to draw tangent functions
+ * @param  {[type]} context [description]
+ * @param  {[type]} startX  [description]
+ * @param  {[type]} endX    [description]
+ * @param  {[type]} mag     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawTangent(context, startX, endX, mag, meta) {
     if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
@@ -198,6 +225,15 @@ function graphyDrawTangent(context, startX, endX, mag, meta) {
     }
 }
 
+/**
+ * Function to draw cotangent functions
+ * @param  {[type]} context [description]
+ * @param  {[type]} startX  [description]
+ * @param  {[type]} endX    [description]
+ * @param  {[type]} mag     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawCotantgent(context, startX, endX, mag, meta) {
     if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
@@ -225,6 +261,14 @@ function graphyDrawCotantgent(context, startX, endX, mag, meta) {
     }
 }
 
+/**
+ * Function to draw cosine functions
+ * @param  {[type]} context [description]
+ * @param  {[type]} base    [description]
+ * @param  {[type]} max     [description]
+ * @param  {[type]} meta    [description]
+ * @return {[type]}         [description]
+ */
 function graphyDrawLog(context, base, max, meta) {
     if (meta.POLY_SEGMENT <= 0) {
         console.log('Segment is not positive');
